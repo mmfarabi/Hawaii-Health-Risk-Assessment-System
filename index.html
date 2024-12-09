@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HHRAS Prototype</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Hawaii Health Risk Assessment System (HHRAS)</h1>
+    </header>
+
+    <main>
+        <!-- User Form Section -->
+        <section id="form-section">
+            <h2>Health Risk Assessment Form</h2>
+            <form id="health-form">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required>
+
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="smoking">Do you smoke?</label>
+                <select id="smoking" name="smoking" required>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+
+                <label for="diabetes">Do you have diabetes?</label>
+                <select id="diabetes" name="diabetes" required>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+
+                <button type="button" id="submit-form">Submit</button>
+            </form>
+        </section>
+
+        <!-- Risk Assessment Result -->
+        <section id="result-section" style="display: none;">
+            <h2>Assessment Result</h2>
+            <p id="risk-status"></p>
+            <button id="book-appointment">Book Appointment</button>
+        </section>
+
+        <!-- Appointment Booking -->
+        <section id="appointment-section" style="display: none;">
+            <h2>Book an Appointment</h2>
+            <form id="appointment-form">
+                <label for="hospital">Select Hospital:</label>
+                <select id="hospital" name="hospital" required>
+                    <option value="Hawaii General">Hawaii General</option>
+                    <option value="Aloha Medical Center">Aloha Medical Center</option>
+                </select>
+
+                <label for="date">Select Date:</label>
+                <input type="date" id="date" name="date" required>
+
+                <label for="time">Select Time:</label>
+                <input type="time" id="time" name="time" required>
+
+                <button type="button" id="confirm-appointment">Confirm Appointment</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Hawaii Health Risk Assessment System (HHRAS)</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
