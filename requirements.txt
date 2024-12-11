@@ -1,0 +1,6 @@
+Flask
+google-generativeai
+python-dotenv
+matplotlib
+pandas
+sqlite3
