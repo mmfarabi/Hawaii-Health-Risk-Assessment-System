@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Styles for header and footer */
+        .navbar { background-color: #007bff; }
+        .navbar-brand { color: white; }
+        .navbar-nav .nav-link { color: white; }
+        .navbar-nav .nav-link.active, .navbar-nav .nav-link:hover { color: #ffc107; }
+        footer { background-color: #343a40; color: white; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">Hawaii Health Risk Assessment System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('appointment') }}">Book Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin_panel') }}">Admin Panel</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Book Appointment</h1>
+        <form method="POST" action="{{ url_for('appointment') }}">
+            <div class="mb-3">
+                <label for="appointment_date" class="form-label">Appointment Date</label>
+                <input type="date" class="form-control" id="appointment_date" name="appointment_date" required>
+            </div>
+            <div class="mb-3">
+                <label for="appointment_time" class="form-label">Appointment Time</label>
+                <input type="time" class="form-control" id="appointment_time" name="appointment_time" required>
+            </div>
+            <div class="mb-3">
+                <label for="doctor" class="form-label">Primary Disease/Condition:</label>
+                <select class="form-select" id="doctor" name="doctor" required>
+                    <option value="">Health Check Up</option>
+                    <option value="Hypertension">Hypertension</option>
+                    <option value="Diabetes Type 1">Diabetes Type 1</option>
+                    <option value="Diabetes Type 2">Diabetes Type 2</option>
+                    <option value="Asthma">Asthma</option>
+                    <option value="Allergies">Allergies</option>
+                    <option value="Osteoarthritis">Osteoarthritis</option>
+                    <option value="Heart Failure">Heart Failure</option>
+                    <option value="Coronary Artery Disease">Coronary Artery Disease</option>
+                    <option value="Stroke">Stroke</option>
+                    <option value="Depression">Depression</option>
+                    <option value="Anxiety">Anxiety</option>
+                    <option value="Chronic Kidney Disease">Chronic Kidney Disease</option>
+                    <option value="Migraine">Migraine</option>
+                    <option value="Breast Cancer">Breast Cancer</option>
+                    <option value="Lung Cancer">Lung Cancer</option>
+                    <option value="Colorectal Cancer">Colorectal Cancer</option>
+                    <option value="Prostate Cancer">Prostate Cancer</option>
+                    <option value="Alzheimer's Disease">Alzheimer's Disease</option>
+                    <option value="Parkinson's Disease">Parkinson's Disease</option>
+                    <option value="Irritable Bowel Syndrome (IBS)">Irritable Bowel Syndrome (IBS)</option>
+                    <option value="Heart Disease">Heart Disease</option>
+                    <option value="Diabetes">Diabetes</option>
+                    <option value="Cancer">Cancer</option>
+                    <!-- Add more here -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea class="form-control" id="notes" name="notes"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Book Appointment</button>
+        </form>
+    </div>
+
+    <footer class="bg-dark text-white text-center text-lg-start mt-5">
+      <div class="text-center p-3">
+        © 2024 Copyright: Mirza Milan Farabi
+      </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hawaii Health Risk Assessment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        .error { color: red; } 
+        .mb-3 label { display: block; margin-bottom: 5px; } 
+        /* Custom styles for header and footer */
+        .navbar { background-color: #007bff; /* Example: Blue */ }  
+        .navbar-brand { color: white; }
+        .navbar-nav .nav-link { color: white; }
+        .navbar-nav .nav-link.active, .navbar-nav .nav-link:hover { color: #ffc107; /* Example: Gold */ }
+        footer { background-color: #343a40; /* Example: Dark Gray */ color: white; }
+    </style>
+    <script>
+      //Show/hide family history details
+      const familyHistoryYes = document.getElementById('familyHistoryYes');
+      const familyHistoryNo = document.getElementById('familyHistoryNo');
+      const familyHistoryDetails = document.getElementById('familyHistoryDetails');
+      familyHistoryYes.addEventListener('change', function() { familyHistoryDetails.style.display = this.checked ? 'block' : 'none'; });
+      familyHistoryNo.addEventListener('change', function() { familyHistoryDetails.style.display = !this.checked ? 'block' : 'none'; });
+      if (!familyHistoryYes.checked) familyHistoryDetails.style.display = 'none';
+
+
+      //Show/hide chronic disease details
+      const chronicYes = document.getElementById('chronicYes');
+      const chronicNo = document.getElementById('chronicNo');
+      const chronicDetails = document.getElementById('chronicDetails');
+      chronicYes.addEventListener('change', function() { chronicDetails.style.display = this.checked ? 'block' : 'none'; });
+      chronicNo.addEventListener('change', function() { chronicDetails.style.display = !this.checked ? 'block' : 'none'; });
+      if (!chronicYes.checked) chronicDetails.style.display = 'none';
+
+      // Basic form validation (enhance as needed)
+      const form = document.getElementById('assessmentForm');
+      form.addEventListener('submit', function(event) {
+          event.preventDefault(); //Prevent default submission
+          if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+      });
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">Hawaii Health Risk Assessment System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('appointment') }}">Book Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin_panel') }}">Admin Panel</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Hawaii Health Risk Assessment</h1>
+        <form id="assessmentForm" method="POST" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <h2>Personal Information</h2>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Full Name<span class="error">*</span></label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                    <div class="invalid-feedback">Please enter your full name.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address<span class="error">*</span></label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="dob" class="form-label">Date of Birth<span class="error">*</span></label>
+                    <input type="date" id="dob" name="dob" class="form-control" required>
+                    <div class="invalid-feedback">Please enter your date of birth.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="gender" class="form-label">Gender<span class="error">*</span></label>
+                    <select id="gender" name="gender" class="form-select" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="invalid-feedback">Please select your gender.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea id="address" name="address" rows="3" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <h2>Lifestyle and Habits</h2>
+                <div class="mb-3">
+                    <label>Do you smoke?<span class="error">*</span></label>
+                    <div class="form-check">
+                        <input type="radio" id="smokeYes" name="smoke" value="Yes" class="form-check-input" required>
+                        <label class="form-check-label" for="smokeYes">Yes</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="smokeNo" name="smoke" value="No" class="form-check-input" required>
+                        <label class="form-check-label" for="smokeNo">No</label>
+                    </div>
+                    <div class="invalid-feedback">Please select an option.</div>
+                </div>
+                <div class="mb-3">
+                    <label>Do you consume alcohol?<span class="error">*</span></label>
+                    <div class="form-check">
+                        <input type="radio" id="alcoholYes" name="alcohol" value="Yes" class="form-check-input" required>
+                        <label class="form-check-label" for="alcoholYes">Yes</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="alcoholNo" name="alcohol" value="No" class="form-check-input" required>
+                        <label class="form-check-label" for="alcoholNo">No</label>
+                    </div>
+                    <div class="invalid-feedback">Please select an option.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="exercise" class="form-label">Exercise Frequency<span class="error">*</span></label>
+                    <select id="exercise" name="exercise" class="form-select" required>
+                        <option value="">Select Frequency</option>
+                        <option value="Daily">Daily</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Occasionally">Occasionally</option>
+                        <option value="Never">Never</option>
+                    </select>
+                    <div class="invalid-feedback">Please select an option.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="diet" class="form-label">Dietary Preference<span class="error">*</span></label>
+                    <select id="diet" name="diet" class="form-select" required>
+                        <option value="">Select Preference</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Non-Vegetarian">Non-Vegetarian</option>
+                        <option value="Vegan">Vegan</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="invalid-feedback">Please select an option.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="sleep" class="form-label">Average Sleep (hours/day)<span class="error">*</span></label>
+                    <input type="number" id="sleep" name="sleep" class="form-control" min="0" max="24" required>
+                    <div class="invalid-feedback">Please enter a valid number (0-24).</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <h2>Medical History</h2>
+                <div class="mb-3">
+                    <label>Family History of Health Conditions?<span class="error">*</span></label>
+                    <div class="form-check">
+                        <input type="radio" id="familyHistoryYes" name="family_history" value="Yes" class="form-check-input" required>
+                        <label class="form-check-label" for="familyHistoryYes">Yes</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="familyHistoryNo" name="family_history" value="No" class="form-check-input" required>
+                        <label class="form-check-label" for="familyHistoryNo">No</label>
+                    </div>
+                    <div class="invalid-feedback">Please select an option.</div>
+                </div>
+                <div id="familyHistoryDetails" class="mb-3">
+                    <label>Family History Conditions</label>
+                    <div class="form-check">
+                        <input type="checkbox" id="heartDisease" name="family_conditions[]" value="Heart Disease" class="form-check-input">
+                        <label class="form-check-label" for="heartDisease">Heart Disease</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="diabetes" name="family_conditions[]" value="Diabetes" class="form-check-input">
+                        <label class="form-check-label" for="diabetes">Diabetes</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="cancer" name="family_conditions[]" value="Cancer" class="form-check-input">
+                        <label class="form-check-label" for="cancer">Cancer</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="hypertension" name="family_conditions[]" value="Hypertension" class="form-check-input">
+                        <label class="form-check-label" for="hypertension">Hypertension</label>
+                    </div>
+                    <input type="text" name="other_family_conditions" placeholder="Other conditions" class="form-control mt-2">
+                </div>
+                <div class="mb-3">
+                    <label>Have you been diagnosed with any chronic diseases?<span class="error">*</span></label>
+                    <div class="form-check">
+                        <input type="radio" id="chronicYes" name="chronic_diseases" value="Yes" class="form-check-input" required>
+                        <label class="form-check-label" for="chronicYes">Yes</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="chronicNo" name="chronic_diseases" value="No" class="form-check-input" required>
+                        <label class="form-check-label" for="chronicNo">No</label>
+                    </div>
+                    <div class="invalid-feedback">Please select an option.</div>
+                </div>
+                <div id="chronicDetails" class="mb-3">
+                    <label>Chronic Diseases</label>
+                    <div class="form-check">
+                        <input type="checkbox" id="diabetesChronic" name="chronic_conditions[]" value="Diabetes" class="form-check-input">
+                        <label class="form-check-label" for="diabetesChronic">Diabetes</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="hypertensionChronic" name="chronic_conditions[]" value="Hypertension" class="form-check-input">
+                        <label class="form-check-label" for="hypertensionChronic">Hypertension</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="asthma" name="chronic_conditions[]" value="Asthma" class="form-check-input">
+                        <label class="form-check-label" for="asthma">Asthma</label>
+                    </div>
+                    <input type="text" name="other_chronic_conditions" placeholder="Other conditions" class="form-control mt-2">
+                </div>
+            </div>
+
+
+            <div class="mb-3">
+                <h2>Symptoms and Current Health</h2>
+                <label>Recent Symptoms?</label>
+                <div class="form-check">
+                    <input type="checkbox" id="chestPain" name="symptoms[]" value="Chest Pain or Discomfort" class="form-check-input">
+                    <label class="form-check-label" for="chestPain">Chest Pain or Discomfort</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="shortnessOfBreath" name="symptoms[]" value="Shortness of Breath" class="form-check-input">
+                    <label class="form-check-label" for="shortnessOfBreath">Shortness of Breath</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="weightLoss" name="symptoms[]" value="Unexplained Weight Loss" class="form-check-input">
+                    <label class="form-check-label" for="weightLoss">Unexplained Weight Loss</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="fatigue" name="symptoms[]" value="Persistent Fatigue or Weakness" class="form-check-input">
+                    <label class="form-check-label" for="fatigue">Persistent Fatigue or Weakness</label>
+                </div>
+                <input type="text" name="other_symptoms" placeholder="Other symptoms" class="form-control mt-2">
+                <div class="mb-3">
+                    <label for="healthCondition" class="form-label">Overall Health Condition<span class="error">*</span></label>
+                    <select id="healthCondition" name="health_condition" class="form-select" required>
+                        <option value="">Select Condition</option>
+                        <option value="Excellent">Excellent</option>
+                        <option value="Good">Good</option>
+                        <option value="Fair">Fair</option>
+                        <option value="Poor">Poor</option>
+                    </select>
+                    <div class="invalid-feedback">Please select an option.</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <h2>Health Metrics (Optional)</h2>
+                <div class="mb-3">
+                    <label for="height" class="form-label">Height (cm)</label>
+                    <input type="number" id="height" name="height" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="weight" class="form-label">Weight (kg)</label>
+                    <input type="number" id="weight" name="weight" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="bloodPressure" class="form-label">Blood Pressure (e.g., 120/80)</label>
+                    <input type="text" id="bloodPressure" name="blood_pressure" class="form-control">
+                </div>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" id="consent" name="consent" class="form-check-input" required>
+                <label class="form-check-label" for="consent">
+                    I consent to the analysis of my provided health information.
+                </label>
+                <div class="invalid-feedback">You must agree before submitting.</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        {% if error %}
+            <div class="alert alert-danger mt-3">{{ error }}</div>
+        {% endif %}
+    </div>
+    
+    <br><br>
+
+    <footer class="bg-dark text-white text-center text-lg-start mt-5">
+      <div class="text-center p-3">
+        © 2024 Copyright: Mirza Milan Farabi
+      </div>
+    </footer>
+
+</body>
+</html>
