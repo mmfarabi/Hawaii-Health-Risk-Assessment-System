@@ -77,7 +77,7 @@ By default, the application will run at `http://127.0.0.1:5000/`.
 ---
 
 ## API Integration
-This application integrates the [Google Gemini API](https://developers.google.com/) for generating health insights. Ensure the API key is configured correctly in your `.env` file.
+This application integrates the [Google Gemini API](https://ai.google.dev/gemini-api/docs) for generating health insights. Ensure the API key is configured correctly in your `.env` file.
 
 ---
 
